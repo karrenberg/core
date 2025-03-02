@@ -2994,7 +2994,7 @@ uvcclient==0.12.1
 vacuum-map-parser-roborock==0.1.2
 
 # homeassistant.components.vallox
-vallox-websocket-api==5.3.0
+vallox-websocket-api==5.4.0
 
 # homeassistant.components.rdw
 vehicle==2.2.2
