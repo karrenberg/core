@@ -46,7 +46,37 @@
       },
       "supply_air_target_boost": {
         "name": "Supply air temperature (Boost)"
-      }
+      },
+      "fan_speed_home": {
+        "name": "Fan speed (Home)"
+      },
+      "fan_speed_away": {
+        "name": "Fan speed (Away)"
+      },
+      "fan_speed_boost": {
+        "name": "Fan speed (Boost)"
+      },
+      "profile_duration_boost": {
+        "name": "Profile duration (Boost)"
+      },
+      "profile_duration_fireplace": {
+        "name": "Profile duration (Fireplace)"
+      },
+      "profile_duration_extra": {
+        "name": "Profile duration (Extra)"
+      },
+      "co2_limit": {
+        "name": "CO2 control threshold"
+      },
+      "rh_basic_level": {
+        "name": "Humidity control threshold"
+      },
+      "post_heater_winter_setpoint": {
+        "name": "Heating season"
+      },
+      "supply_air_defrost_temp": {
+        "name": "Defrost supply air temperature setting"
+      },
     },
     "sensor": {
       "current_profile": {
@@ -65,7 +95,13 @@
         "name": "Remaining time for filter"
       },
       "cell_state": {
-        "name": "Cell state"
+        "name": "Cell state",
+        "state": {
+          "HeatReco": "Heat recovery",
+          "CoolReco": "Cool recovery",
+          "Bypass": "Bypass",
+          "Defrost": "Defrosting"
+        }
       },
       "extract_air": {
         "name": "Extract air"
@@ -90,16 +126,82 @@
       },
       "profile_duration": {
         "name": "Profile duration"
+      },
+      "multisensor_rh": {
+        "name": "Humidity multisensor"
+      },
+      "supply_heating_adjust_mode_sensor": {
+        "name": "Supply heating adjust mode"
+      },
+      "defrost_mode_sensor": {
+        "name": "Defrost mode"
       }
     },
     "switch": {
       "bypass_locked": {
         "name": "Bypass locked"
+      },
+      "partial_bypass": {
+        "name": "Partial bypass"
+      },
+      "partial_bypass_disabled": {
+        "name": "Partial bypass disabled"
+      },
+      "cool_recovery": {
+        "name": "Cool recovery"
+      },
+      "rh_level_mode": {
+        "name": "Humidity control use manual threshold"
+      },
+      "home_rh_ctrl_enabled": {
+        "name": "Humidity control (Home)"
+      },
+      "away_rh_ctrl_enabled": {
+        "name": "Humidity control (Away)"
+      },
+      "boost_rh_ctrl_enabled": {
+        "name": "Humidity control (Boost)"
+      },
+      "home_co2_ctrl_enabled": {
+        "name": "CO2 control (Home)"
+      },
+      "away_co2_ctrl_enabled": {
+        "name": "CO2 control (Away)"
+      },
+      "boost_co2_ctrl_enabled": {
+        "name": "CO2 control (Boost)"
       }
     },
     "date": {
       "filter_change_date": {
         "name": "Filter change date"
+      }
+    },
+    "select": {
+      "profile": {
+        "name": "Profile",
+        "state": {
+          "Home": "Home",
+          "Away": "Away",
+          "Boost": "Boost",
+          "Fireplace": "Fireplace",
+          "Extra": "Extra"
+        }
+      },
+      "supply_heating_adjust_mode": {
+        "name": "Supply heating adjust mode",
+        "state": {
+          "Supply": "Supply air heating",
+          "Extract": "Extract air heating",
+          "Cooling": "Cooling"
+        }
+      },
+      "defrost_mode": {
+        "name": "Defrost mode",
+        "state": {
+          "Bypass": "HR cell bypass",
+          "Fanstop": "Fan stop"
+        }
       }
     }
   },

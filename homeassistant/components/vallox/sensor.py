@@ -30,6 +30,8 @@ from .const import (
     METRIC_KEY_MODE,
     MODE_ON,
     VALLOX_CELL_STATE_TO_STR,
+    VALLOX_DEFROST_MODE_TO_STR,
+    VALLOX_SUPPLY_HEATING_ADJUST_MODE_TO_STR,
     VALLOX_PROFILE_TO_PRESET_MODE,
 )
 from .coordinator import ValloxDataUpdateCoordinator
@@ -138,6 +140,34 @@ class ValloxProfileDurationSensor(ValloxSensorEntity):
         return self.coordinator.data.get_remaining_profile_duration(
             self.coordinator.data.profile
         )
+
+
+class ValloxDefrostModeSensor(ValloxSensorEntity):
+    """Child class for defrost mode reporting."""
+
+    @property
+    def native_value(self) -> StateType:
+        """Return the value reported by the sensor."""
+        super_native_value = super().native_value
+
+        if not isinstance(super_native_value, int):
+            return None
+
+        return VALLOX_DEFROST_MODE_TO_STR.get(super_native_value)
+
+
+class ValloxSupplyHeatingAdjustModeSensor(ValloxSensorEntity):
+    """Child class for supply heating adjust mode reporting."""
+
+    @property
+    def native_value(self) -> StateType:
+        """Return the value reported by the sensor."""
+        super_native_value = super().native_value
+
+        if not isinstance(super_native_value, int):
+            return None
+
+        return VALLOX_SUPPLY_HEATING_ADJUST_MODE_TO_STR.get(super_native_value)
 
 
 @dataclass(frozen=True)
@@ -273,6 +303,29 @@ SENSOR_ENTITIES: tuple[ValloxSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTime.MINUTES,
         entity_type=ValloxProfileDurationSensor,
+    ),
+    ValloxSensorEntityDescription(
+        key="multisensor_rh",
+        translation_key="multisensor_rh",
+        metric_key="A_CYC_MULTISENSOR_RH",
+        device_class=SensorDeviceClass.HUMIDITY,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        entity_registry_enabled_default=False,
+    ),
+    ValloxSensorEntityDescription(
+        key="supply_heating_adjust_mode_sensor",
+        translation_key="supply_heating_adjust_mode_sensor",
+        metric_key="A_CYC_SUPPLY_HEATING_ADJUST_MODE",
+        entity_type=ValloxSupplyHeatingAdjustModeSensor,
+        entity_registry_enabled_default=False,
+    ),
+    ValloxSensorEntityDescription(
+        key="defrost_mode_sensor",
+        translation_key="defrost_mode_sensor",
+        metric_key="A_CYC_DEFROST_MODE",
+        entity_type=ValloxDefrostModeSensor,
+        entity_registry_enabled_default=False,
     ),
 )
 

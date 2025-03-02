@@ -42,11 +42,10 @@ class ValloxSwitchEntity(ValloxEntity, SwitchEntity):
     @property
     def is_on(self) -> bool | None:
         """Return true if the switch is on."""
-        if (
-            value := self.coordinator.data.get(self.entity_description.metric_key)
-        ) is None:
+        value = self.coordinator.data.get(self.entity_description.metric_key)
+        if value is None:
             return None
-        return value == 1
+        return not value if self.entity_description.invert else bool(value)
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn on."""
@@ -59,15 +58,16 @@ class ValloxSwitchEntity(ValloxEntity, SwitchEntity):
     async def _set_value(self, value: bool) -> None:
         """Update the current value."""
         metric_key = self.entity_description.metric_key
-        await self._client.set_values({metric_key: 1 if value else 0})
+        enabled = not value if self.entity_description.invert else value
+        await self._client.set_values({metric_key: int(enabled)})
         await self.coordinator.async_request_refresh()
 
 
 @dataclass(frozen=True, kw_only=True)
 class ValloxSwitchEntityDescription(SwitchEntityDescription):
     """Describes Vallox switch entity."""
-
     metric_key: str
+    invert: bool = False
 
 
 SWITCH_ENTITIES: tuple[ValloxSwitchEntityDescription, ...] = (
@@ -75,6 +75,52 @@ SWITCH_ENTITIES: tuple[ValloxSwitchEntityDescription, ...] = (
         key="bypass_locked",
         translation_key="bypass_locked",
         metric_key="A_CYC_BYPASS_LOCKED",
+    ),
+    ValloxSwitchEntityDescription(
+        key="partial_bypass", # TODO: Possibly not a switch, GUI shows 3 options: on/off/special premises
+        translation_key="partial_bypass",
+        metric_key="A_CYC_PARTIAL_BYPASS", # NOTE: There's also A_CYC_PARTIAL_BYPASS_DISABLED but it didn't seem to work.
+    ),
+    ValloxSwitchEntityDescription(
+        key="cool_recovery",
+        translation_key="cool_recovery",
+        metric_key="A_CYC_COOLRECOVERY_DISABLED",
+        invert=True,
+    ),
+    ValloxSwitchEntityDescription(
+        key="rh_level_mode",
+        translation_key="rh_level_mode",
+        metric_key="A_CYC_RH_LEVEL_MODE",
+    ),
+    ValloxSwitchEntityDescription(
+        key="home_rh_ctrl_enabled",
+        translation_key="home_rh_ctrl_enabled",
+        metric_key="A_CYC_HOME_RH_CTRL_ENABLED",
+    ),
+    ValloxSwitchEntityDescription(
+        key="away_rh_ctrl_enabled",
+        translation_key="away_rh_ctrl_enabled",
+        metric_key="A_CYC_AWAY_RH_CTRL_ENABLED",
+    ),
+    ValloxSwitchEntityDescription(
+        key="boost_rh_ctrl_enabled",
+        translation_key="boost_rh_ctrl_enabled",
+        metric_key="A_CYC_BOOST_RH_CTRL_ENABLED",
+    ),
+    ValloxSwitchEntityDescription(
+        key="home_co2_ctrl_enabled",
+        translation_key="home_co2_ctrl_enabled",
+        metric_key="A_CYC_HOME_CO2_CTRL_ENABLED",
+    ),
+    ValloxSwitchEntityDescription(
+        key="away_co2_ctrl_enabled",
+        translation_key="away_co2_ctrl_enabled",
+        metric_key="A_CYC_AWAY_CO2_CTRL_ENABLED",
+    ),
+    ValloxSwitchEntityDescription(
+        key="boost_co2_ctrl_enabled",
+        translation_key="boost_co2_ctrl_enabled",
+        metric_key="A_CYC_BOOST_CO2_CTRL_ENABLED",
     ),
 )
 
